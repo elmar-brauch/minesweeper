@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Minesweeper</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+ <body class="bg-light">
+    <div class="container"><main>
+        <div class="py-5 text-center">
+            <div class="container" style="text-align:left; padding-bottom:20px">
+            	<h1>Minesweeper</h1>
+            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).ONGOING}">Click on cell to play...</h3>
+            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).LOSE}">You LOST! Restart server to play again ;-)</h3>
+            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).WIN}">Congratulations You WON! Restart server to play again ;-)</h3>
+			</div>
+			<form th:action="@{/}" method="post">
+            	<div class="container" >
+	                <div th:each="row : ${rows}" class="row">
+	                    <div th:each="cell : ${row}" class="col" style="flex:0; padding-left:0; padding-right:0">
+	                        <button th:if="${cell.mine && cell.open}" type="submit" class="btn btn-danger" name="position" th:value="${cell.position}" disabled>[[${cell}]]</button>
+	                        <button th:if="${!(cell.mine && cell.open)}" type="submit" class="btn btn-secondary" name="position" th:value="${cell.position}" th:disabled="${cell.open}">[[${cell}]]</button>
+	                    </div>
+	                </div>    
+	            </div>
+				<div class="container" style="text-align:left; padding-top:20px">
+					<div th:each="level : ${T(de.bsi.minesweeper.model.Level).values}" class="row" style=padding:5px>
+						<button type="submit" class="btn btn-primary btn-lg" name="level" th:value="${level}">Restart in level [[${level}]]</button>
+					</div>
+				</div>
+			</form>		
+        </div>
+    </main></div>
+</body>
+</html>
