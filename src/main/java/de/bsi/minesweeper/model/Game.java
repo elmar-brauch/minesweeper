@@ -1,5 +1,7 @@
 package de.bsi.minesweeper.model;
 
+import java.util.Optional;
+
 import lombok.Data;
 
 @Data
@@ -11,7 +13,7 @@ public class Game {
 	private String clickedCellPosition;
 	
 	public Game(Level level) {
-		this.field = new MineField(level.getColumns(), level.getRows());
+		this.field = new MineField(level.getRows(), level.getColumns());
 		this.field.placeMineRandomly(level.getMines());
 		this.level = level;
 		this.status = GameStatus.ONGOING;
@@ -26,16 +28,17 @@ public class Game {
 	}
 	
 	private void updateStatus(Cell openedCell) {
-		if (openedCell.isMine()) {
-			status = GameStatus.LOSE;
-			field.openAllCells();
-		}
-		else if (field.isEveryFreeCellOpen()) {
-			status = GameStatus.WIN;
-			field.openAllCells();
-		}	
+		if (openedCell.isMine())
+			endGame(GameStatus.LOSE);
+		else if (field.isEveryFreeCellOpen())
+			endGame(GameStatus.WIN);
 		else
 			status = GameStatus.ONGOING;	
+	}
+
+	private void endGame(GameStatus finalStatus) {
+		status = finalStatus;
+		field.openAllCells();
 	}
 
 }
