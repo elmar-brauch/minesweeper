@@ -27,14 +27,18 @@ public class GameController {
         return VIEW_MINESWEEPER;
     }
     
-    @PostMapping
-    public String openCell(Model model, @RequestParam(required = false) String position, @RequestParam(required = false) String level) {
-    	if (StringUtils.hasText(position)) {
-    		log.info("Button of cell {} pressed.", position);
-        	var rowAndCol = position.split(":");
-        	game.playRound(Integer.parseInt(rowAndCol[0]), Integer.parseInt(rowAndCol[1]));        		
-    	} else
-    		game = new Game(Level.valueOf(level));
+    @PostMapping("play")
+    public String openCellToPlayOneRound(Model model, @RequestParam String position) {
+    	log.info("Button of cell {} pressed.", position);
+        var rowAndCol = position.split(":");
+        game.playRound(Integer.parseInt(rowAndCol[0]), Integer.parseInt(rowAndCol[1]));        		
+    	updateModel(model);
+    	return VIEW_MINESWEEPER;
+    }
+    
+    @PostMapping("restart")
+    public String restartGame(Model model, @RequestParam String level) {
+    	game = new Game(Level.valueOf(level));
     	updateModel(model);
     	return VIEW_MINESWEEPER;
     }

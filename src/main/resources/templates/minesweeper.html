@@ -14,7 +14,7 @@
             	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).LOSE}">You LOST! Restart server to play again ;-)</h3>
             	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).WIN}">Congratulations You WON! Restart server to play again ;-)</h3>
 			</div>
-			<form th:action="@{/}" method="post">
+			<form th:action="@{/play}" method="post">
             	<div class="container" >
 	                <div th:each="row : ${rows}" class="row">
 	                    <div th:each="cell : ${row}" class="col" style="flex:0; padding-left:0; padding-right:0">
@@ -23,6 +23,8 @@
 	                    </div>
 	                </div>    
 	            </div>
+			</form>		
+			<form th:action="@{/restart}" method="post">
 				<div class="container" style="text-align:left; padding-top:20px">
 					<div th:each="level : ${T(de.bsi.minesweeper.model.Level).values}" class="row" style=padding:5px>
 						<button type="submit" class="btn btn-primary btn-lg" name="level" th:value="${level}">Restart in level [[${level}]]</button>
