@@ -15,20 +15,16 @@ public class Game {
 	
 	public GameStatus playRound(Position position) {
 		var optCell = field.getCellAtPosition(position); 
-		if (optCell.isPresent() && !optCell.get().isOpen()) {
-			var cell = field.openCell(position);
-			updateStatus(cell);
-		}
+		if (optCell.isPresent() && !optCell.get().isOpen())
+			openCellAndCheckEndOfGame(position);
 		return status;
 	}
 	
-	private void updateStatus(Cell openedCell) {
-		if (openedCell.isMine())
+	private void openCellAndCheckEndOfGame(Position position) {
+		if (field.openCell(position).isMine())
 			endGame(GameStatus.LOSE);
 		else if (field.isEveryFreeCellOpen())
-			endGame(GameStatus.WIN);
-		else
-			status = GameStatus.ONGOING;	
+			endGame(GameStatus.WIN);	
 	}
 
 	private void endGame(GameStatus finalStatus) {

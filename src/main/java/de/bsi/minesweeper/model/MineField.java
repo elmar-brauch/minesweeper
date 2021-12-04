@@ -40,6 +40,14 @@ public class MineField {
 		getNeighbourCells(position).forEach(cell -> cell.changeScoreAndStatus(cell.getScore() + 1));
 	}
 	
+	public Optional<Cell> getCellAtPosition(Position position) {
+		int row = position.getRow();
+		int column = position.getColumn();
+		if (isInField(row, column))
+			return Optional.of(fieldRows.get(row).get(column)); 
+		return Optional.empty();
+	}
+	
 	public Cell openCell(Position position) {
 		var cell = getCellAtPosition(position).orElseThrow(); 
 		cell.open();
@@ -87,14 +95,6 @@ public class MineField {
 				Position.of(row+1	, column-1	),
 				Position.of(row+1	, column	),
 				Position.of(row+1	, column+1	));
-	}
-	
-	public Optional<Cell> getCellAtPosition(Position position) {
-		int row = position.getRow();
-		int column = position.getColumn();
-		if (isInField(row, column))
-			return Optional.of(fieldRows.get(row).get(column)); 
-		return Optional.empty();
 	}
 	
 	private boolean isInField(int row, int column) {
