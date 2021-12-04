@@ -33,7 +33,7 @@ class MineFieldTest {
 	@CsvSource({"true,0,0","true,2,3",
 		"false,-1,0", "false,3,3", "false,2,4", "false,10,20"})
 	void getCellInFieldAtPosition(boolean expectedPresent, int row, int column) {
-		var optCell = field.getCellInFieldAtPosition(Position.of(row, column));
+		var optCell = field.getCellAtPosition(Position.of(row, column));
 		assertEquals(expectedPresent, optCell.isPresent());
 	}
 	
@@ -47,7 +47,7 @@ class MineFieldTest {
 	@Test
 	void openSingleCellWithoutMines() {
 		var testPosition = Position.of(1, 1);
-		assertFalse(field.getCellInFieldAtPosition(testPosition).orElseThrow().isOpen());
+		assertFalse(field.getCellAtPosition(testPosition).orElseThrow().isOpen());
 		assertTrue(field.openCell(testPosition).isOpen());
 		assertTrue(field.isEveryFreeCellOpen());
 	}

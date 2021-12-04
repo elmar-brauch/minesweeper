@@ -14,7 +14,8 @@ public class Game {
 	}
 	
 	public GameStatus playRound(Position position) {
-		if (!field.getCellInFieldAtPosition(position).orElseThrow().isOpen()) {
+		var optCell = field.getCellAtPosition(position); 
+		if (optCell.isPresent() && !optCell.get().isOpen()) {
 			var cell = field.openCell(position);
 			updateStatus(cell);
 		}

@@ -36,12 +36,12 @@ public class MineField {
 	}
 	
 	void placeOneMineAndUpdateScoreOfNeighbours(Position position) {
-		getCellInFieldAtPosition(position).ifPresent(Cell::placeMine);
+		getCellAtPosition(position).ifPresent(Cell::placeMine);
 		getNeighbourCells(position).forEach(cell -> cell.changeScoreAndStatus(cell.getScore() + 1));
 	}
 	
 	public Cell openCell(Position position) {
-		var cell = getCellInFieldAtPosition(position).orElseThrow(); 
+		var cell = getCellAtPosition(position).orElseThrow(); 
 		cell.open();
 		if (CellStatus.AWAY_OF_MINES.equals(cell.getStatus()))
 			getNeighbourCells(position).stream()
@@ -67,11 +67,11 @@ public class MineField {
 	}
 	
 	List<Cell> getNeighbourCells(Position position) {
-		if (getCellInFieldAtPosition(position).isEmpty())
+		if (getCellAtPosition(position).isEmpty())
 			return List.of();
 		return positionsOfEightNeighbours(position.getRow(), position.getColumn())
 				.stream()
-				.map(this::getCellInFieldAtPosition)
+				.map(this::getCellAtPosition)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.toList();
@@ -79,17 +79,17 @@ public class MineField {
 	
 	private List<Position> positionsOfEightNeighbours(int row, int column) {
 		return List.of(
-				Position.of(row-1	, column-1),
-				Position.of(row-1	, column),
-				Position.of(row-1	, column+1),
-				Position.of(row	, column-1),
-				Position.of(row	, column+1),
-				Position.of(row+1	, column-1),
-				Position.of(row+1	, column),
-				Position.of(row+1	, column+1));
+				Position.of(row-1	, column-1	),
+				Position.of(row-1	, column	),
+				Position.of(row-1	, column+1	),
+				Position.of(row		, column-1	),
+				Position.of(row		, column+1	),
+				Position.of(row+1	, column-1	),
+				Position.of(row+1	, column	),
+				Position.of(row+1	, column+1	));
 	}
 	
-	public Optional<Cell> getCellInFieldAtPosition(Position position) {
+	public Optional<Cell> getCellAtPosition(Position position) {
 		int row = position.getRow();
 		int column = position.getColumn();
 		if (isInField(row, column))
