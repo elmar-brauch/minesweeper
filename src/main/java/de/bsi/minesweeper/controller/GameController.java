@@ -17,34 +17,32 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GameController {
 
-    private static final String VIEW_MINESWEEPER = "minesweeper";
-    
-	private Game game = new Game(Level.EASY);
+    private Game game = new Game(Level.EASY);
 
     @GetMapping
     public String startPage(Model model) {
-    	updateModel(model);
-        return VIEW_MINESWEEPER;
+    	return getGameViewAndUpdateModel(model);
     }
     
     @PostMapping("play")
     public String openCellToPlayOneRound(Model model, @RequestParam String position) {
     	log.info("Button of cell {} pressed.", position);
         game.playRound(Position.parse(position));        		
-    	updateModel(model);
-    	return VIEW_MINESWEEPER;
+        return getGameViewAndUpdateModel(model);
     }
     
     @PostMapping("restart")
     public String restartGame(Model model, @RequestParam String level) {
     	game = new Game(Level.valueOf(level));
-    	updateModel(model);
-    	return VIEW_MINESWEEPER;
+    	return getGameViewAndUpdateModel(model);
     }
+
+    private static final String VIEW_MINESWEEPER = "minesweeper";
     
-    private void updateModel(Model model) {
+    private String getGameViewAndUpdateModel(Model model) {
     	model.addAttribute("rows", game.getField().getFieldRows());
         model.addAttribute("status", game.getStatus());
+        return VIEW_MINESWEEPER;
     }
 
 }
