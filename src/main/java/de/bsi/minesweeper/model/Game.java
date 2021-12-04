@@ -1,25 +1,21 @@
 package de.bsi.minesweeper.model;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 public class Game {
 	
-	private MineField field;
-	private Level level;
-	private GameStatus status;
-	private String clickedCellPosition;
+	@Getter MineField field;
+	@Getter private GameStatus status;
 	
 	public Game(Level level) {
 		this.field = new MineField(level.getRows(), level.getColumns());
 		this.field.placeMinesRandomly(level.getMines());
-		this.level = level;
 		this.status = GameStatus.ONGOING;
 	}
 	
-	public GameStatus playRound(int row, int column) {
-		if (field.isCellClosed(row, column)) {
-			var cell = field.openCell(row, column);
+	public GameStatus playRound(Position position) {
+		if (!field.getCellInFieldAtPosition(position).orElseThrow().isOpen()) {
+			var cell = field.openCell(position);
 			updateStatus(cell);
 		}
 		return status;

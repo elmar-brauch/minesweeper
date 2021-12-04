@@ -6,13 +6,11 @@ import java.util.Optional;
 import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 public class MineField {
 	
-	private final List<List<Cell>> fieldRows = new ArrayList<>();
-	private final RandomGenerator random = RandomGenerator.LeapableGenerator.of("Xoroshiro128PlusPlus");
+	@Getter private final List<List<Cell>> fieldRows = new ArrayList<>();
 	
 	public MineField(int numberOfRows, int numberOfColumns) {
 		for (int rowNumnber = 0; rowNumnber < numberOfRows; rowNumnber++)
@@ -22,44 +20,43 @@ public class MineField {
 	private List<Cell> createNewRow(int rowNumber, int numberOfColumnsInRow) {
 		var newRow = new ArrayList<Cell>();
 		for (int columnNumber = 0; columnNumber < numberOfColumnsInRow; columnNumber++)
-			newRow.add(new Cell(rowNumber, columnNumber));
+			newRow.add(new Cell(Position.of(rowNumber, columnNumber)));
 		return newRow;
 	}
+	
+	private final RandomGenerator random = RandomGenerator.LeapableGenerator.of("Xoroshiro128PlusPlus");
 	
 	public void placeMinesRandomly(int mines) {
 		var freeCells = getFreeCells();
 		for (int i = 0; i < mines && !freeCells.isEmpty(); i++) {
-			int pos = random.nextInt(0, freeCells.size() - 1);
+			int pos = random.nextInt(0, freeCells.size());
 			var cellWithMine = freeCells.remove(pos);
-			placeOneMineAndUpdateScoreOfNeighbours(cellWithMine.getInColumn(), cellWithMine.getInRow());
+			placeOneMineAndUpdateScoreOfNeighbours(cellWithMine.getPosition());
 		}
 	}
 	
-	void placeOneMineAndUpdateScoreOfNeighbours(int column, int row) {
-		getCellInFieldAtPosition(row, column).ifPresent(Cell::placeMine);
-		getNeighbourCells(row, column).forEach(cell -> cell.changeScoreAndStatus(cell.getScore() + 1));
+	void placeOneMineAndUpdateScoreOfNeighbours(Position position) {
+		getCellInFieldAtPosition(position).ifPresent(Cell::placeMine);
+		getNeighbourCells(position).forEach(cell -> cell.changeScoreAndStatus(cell.getScore() + 1));
 	}
 	
-	public Cell openCell(int row, int column) {
-		var cell = getCellInFieldAtPosition(row, column).orElseThrow(); 
-		cell.setOpen(true);
+	public Cell openCell(Position position) {
+		var cell = getCellInFieldAtPosition(position).orElseThrow(); 
+		cell.open();
 		if (CellStatus.AWAY_OF_MINES.equals(cell.getStatus()))
-			getNeighbourCells(row, column).stream()
+			getNeighbourCells(position).stream()
 					.filter(c -> !c.isOpen())
-					.forEach(c -> openCell(c.getInRow(), c.getInColumn()));
+					.map(Cell::getPosition)
+					.forEach(this::openCell);
 		return cell; 
 	}
 	
 	public void openAllCells() {
-		fieldRows.stream().flatMap(List<Cell>::stream).forEach(cell -> cell.setOpen(true));
+		fieldRows.stream().flatMap(List<Cell>::stream).forEach(Cell::open);
 	}
 	
 	public boolean isEveryFreeCellOpen() {
 		return getFreeCells().stream().allMatch(Cell::isOpen);
-	}
-	
-	public boolean isCellClosed(int row, int column) {
-		return !getCellInFieldAtPosition(row, column).orElseThrow().isOpen();
 	}
 	
 	private List<Cell> getFreeCells() {
@@ -69,33 +66,40 @@ public class MineField {
 				.collect(Collectors.toList()); //NOSONAR because mutable list is required. 
 	}
 	
-	List<Cell> getNeighbourCells(int row, int column) {
-		if (getCellInFieldAtPosition(row, column).isEmpty())
+	List<Cell> getNeighbourCells(Position position) {
+		if (getCellInFieldAtPosition(position).isEmpty())
 			return List.of();
-		return positionsOfEightNeighbours(row, column).stream()
-				.map(position -> getCellInFieldAtPosition(position[0], position[1]))
+		return positionsOfEightNeighbours(position.getRow(), position.getColumn())
+				.stream()
+				.map(this::getCellInFieldAtPosition)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.toList();
 	}
 	
-	private List<int[]> positionsOfEightNeighbours(int row, int column) {
+	private List<Position> positionsOfEightNeighbours(int row, int column) {
 		return List.of(
-				new int[]{row-1	, column-1},
-				new int[]{row-1	, column},
-				new int[]{row-1	, column+1},
-				new int[]{row	, column-1},
-				new int[]{row	, column+1},
-				new int[]{row+1	, column-1},
-				new int[]{row+1	, column},
-				new int[]{row+1	, column+1});
+				Position.of(row-1	, column-1),
+				Position.of(row-1	, column),
+				Position.of(row-1	, column+1),
+				Position.of(row	, column-1),
+				Position.of(row	, column+1),
+				Position.of(row+1	, column-1),
+				Position.of(row+1	, column),
+				Position.of(row+1	, column+1));
 	}
 	
-	private Optional<Cell> getCellInFieldAtPosition(int row, int column) {
-		if (row >= 0 && row < fieldRows.size()
-				&& column >= 0 && column < fieldRows.get(row).size())
+	public Optional<Cell> getCellInFieldAtPosition(Position position) {
+		int row = position.getRow();
+		int column = position.getColumn();
+		if (isInField(row, column))
 			return Optional.of(fieldRows.get(row).get(column)); 
 		return Optional.empty();
+	}
+	
+	private boolean isInField(int row, int column) {
+		return row >= 0 && row < fieldRows.size()
+				&& column >= 0 && column < fieldRows.get(row).size();
 	}
 
 }

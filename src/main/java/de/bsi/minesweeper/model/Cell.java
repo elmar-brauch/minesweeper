@@ -1,19 +1,17 @@
 package de.bsi.minesweeper.model;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Cell {
 	
-	private final int inRow;
-	private final int inColumn;
+	private final Position position;
 	private CellStatus status = CellStatus.AWAY_OF_MINES;
 	private long score = 0;
 	private boolean open = false;
 	
-	public Cell(int inRow, int inColumn) {
-		this.inRow = inRow;
-		this.inColumn = inColumn;
+	public Cell(Position position) {
+		this.position = position;
 	}
 
 	public void changeScoreAndStatus(long newScore) {
@@ -30,10 +28,6 @@ public class Cell {
 		return this.status == CellStatus.MINE;
 	}
 	
-	public String getPosition() {
-		return inRow + ":" + inColumn;
-	}
-	
 	@Override
 	public String toString() {
 		if (!open) 
@@ -41,6 +35,10 @@ public class Cell {
 		if (isMine())
 			return "X";
 		return "" + score;
+	}
+
+	public void open() {
+		this.open = true;
 	}
 	
 }

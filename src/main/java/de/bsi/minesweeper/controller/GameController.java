@@ -2,7 +2,6 @@ package de.bsi.minesweeper.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.bsi.minesweeper.model.Game;
 import de.bsi.minesweeper.model.Level;
+import de.bsi.minesweeper.model.Position;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -30,8 +30,7 @@ public class GameController {
     @PostMapping("play")
     public String openCellToPlayOneRound(Model model, @RequestParam String position) {
     	log.info("Button of cell {} pressed.", position);
-        var rowAndCol = position.split(":");
-        game.playRound(Integer.parseInt(rowAndCol[0]), Integer.parseInt(rowAndCol[1]));        		
+        game.playRound(Position.parse(position));        		
     	updateModel(model);
     	return VIEW_MINESWEEPER;
     }
