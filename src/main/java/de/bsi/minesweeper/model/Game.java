@@ -1,7 +1,5 @@
 package de.bsi.minesweeper.model;
 
-import java.util.Optional;
-
 import lombok.Data;
 
 @Data
@@ -14,7 +12,7 @@ public class Game {
 	
 	public Game(Level level) {
 		this.field = new MineField(level.getRows(), level.getColumns());
-		this.field.placeMineRandomly(level.getMines());
+		this.field.placeMinesRandomly(level.getMines());
 		this.level = level;
 		this.status = GameStatus.ONGOING;
 	}
