@@ -32,7 +32,7 @@ class MineFieldTest {
 	@ParameterizedTest
 	@CsvSource({"true,0,0","true,2,3",
 		"false,-1,0", "false,3,3", "false,2,4", "false,10,20"})
-	void getCellInFieldAtPosition(boolean expectedPresent, int row, int column) {
+	void getCellAtPosition(boolean expectedPresent, int row, int column) {
 		var optCell = field.getCellAtPosition(Position.of(row, column));
 		assertEquals(expectedPresent, optCell.isPresent());
 	}
