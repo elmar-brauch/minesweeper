@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum Level {
 	EASY(5, 5, 4),
 	MEDIUM(10, 12, 25),
-	HARD(20, 25, 125);
+	HARD(25, 20, 125);
 	
 	private int columns;
 	private int rows;

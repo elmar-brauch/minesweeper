@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.random.RandomGenerator;
-import java.util.stream.Collectors;
 
 import lombok.Getter;
 
@@ -27,7 +26,7 @@ public class MineField {
 	private final RandomGenerator random = RandomGenerator.LeapableGenerator.of("Xoroshiro128PlusPlus");
 	
 	public void placeMinesRandomly(int mines) {
-		var freeCells = getFreeCells();
+		var freeCells = new ArrayList<>(getFreeCells());
 		for (int i = 0; i < mines && !freeCells.isEmpty(); i++) {
 			int pos = random.nextInt(0, freeCells.size());
 			var cellWithMine = freeCells.remove(pos);
@@ -71,7 +70,7 @@ public class MineField {
 		return fieldRows.stream()
 				.flatMap(List<Cell>::stream)
 				.filter(cell -> !cell.isMine())
-				.collect(Collectors.toList()); //NOSONAR because mutable list is required. 
+				.toList(); 
 	}
 	
 	List<Cell> getNeighbourCells(Position position) {
