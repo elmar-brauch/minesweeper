@@ -34,7 +34,7 @@ public class MineField {
 		}
 	}
 	
-	void placeOneMineAndUpdateScoreOfNeighbours(Position position) {
+	public void placeOneMineAndUpdateScoreOfNeighbours(Position position) {
 		getCellAtPosition(position).ifPresent(Cell::placeMine);
 		getNeighbourCells(position).forEach(cell -> cell.changeScoreAndStatus(cell.getScore() + 1));
 	}

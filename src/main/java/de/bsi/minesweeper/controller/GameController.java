@@ -33,9 +33,25 @@ public class GameController {
     
     @PostMapping("restart")
     public String restartGame(Model model, @RequestParam String level) {
+    	log.info("Game restart in level {}.", level);
     	game = new Game(Level.valueOf(level));
     	return getGameViewAndUpdateModel(model);
     }
+    
+    @GetMapping("restart")
+	public String createEmptyGame(Model model, @RequestParam int rows, @RequestParam int columns) {
+		log.info("New Game without mines created in size {}x{}", rows, columns);
+		game = new Game(rows, columns);
+		return getGameViewAndUpdateModel(model);
+	}
+	
+	@GetMapping("mine")
+	public String placeMineAt(Model model, @RequestParam int row, @RequestParam int column) {
+		log.info("Place mine at position {}:{}", row, column);
+		var minePosition = Position.of(row, column);
+		game.getField().placeOneMineAndUpdateScoreOfNeighbours(minePosition);
+		return getGameViewAndUpdateModel(model);
+	}
 
     private static final String VIEW_MINESWEEPER = "minesweeper";
     

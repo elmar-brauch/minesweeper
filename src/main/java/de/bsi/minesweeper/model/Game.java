@@ -8,9 +8,13 @@ public class Game {
 	@Getter private GameStatus status;
 	
 	public Game(Level level) {
-		this.field = new MineField(level.getRows(), level.getColumns());
+		this(level.getRows(), level.getColumns());
 		this.field.placeMinesRandomly(level.getMines());
-		this.status = GameStatus.ONGOING;
+	}
+	
+	public Game(int numberOfRows, int numberOfColumns) {
+		this.field = new MineField(numberOfRows, numberOfColumns);
+		this.status = GameStatus.ONGOING;		
 	}
 	
 	public GameStatus playRound(Position position) {
