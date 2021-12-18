@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.annotation.SessionScope;
 
 import de.bsi.minesweeper.model.Game;
 import de.bsi.minesweeper.model.Level;
@@ -13,6 +14,7 @@ import de.bsi.minesweeper.model.Position;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@SessionScope
 @RequestMapping("/")
 @Slf4j
 public class GameController {
