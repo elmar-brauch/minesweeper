@@ -18,11 +18,23 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/")
 @Slf4j
 public class GameController {
+	
+	private static final String VIEW_MINESWEEPER = "minesweeper";
+	private static final String VIEW_LOGIN = "login";
 
     private Game game = new Game(Level.EASY);
+    private String playerName;
 
     @GetMapping
     public String startPage(Model model) {
+    	return VIEW_LOGIN;
+    }
+    
+    @PostMapping("login")
+    public String startGame(Model model, @RequestParam String player) {
+    	log.info("Player {} started the game.", player);
+    	playerName = player;
+    	game = new Game(Level.EASY);
     	return getGameViewAndUpdateModel(model);
     }
     
@@ -55,11 +67,10 @@ public class GameController {
 		return getGameViewAndUpdateModel(model);
 	}
 
-    private static final String VIEW_MINESWEEPER = "minesweeper";
-    
     private String getGameViewAndUpdateModel(Model model) {
     	model.addAttribute("rows", game.getField().getFieldRows());
         model.addAttribute("status", game.getStatus());
+        model.addAttribute("player", playerName);
         return VIEW_MINESWEEPER;
     }
 

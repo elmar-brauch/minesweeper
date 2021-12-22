@@ -10,9 +10,9 @@
         <div class="py-5 text-center">
             <div class="container" style="text-align:left; padding-bottom:20px">
             	<h1>Minesweeper</h1>
-            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).ONGOING}">Click on cell to play...</h3>
-            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).LOSE}">You LOST! Restart server to play again ;-)</h3>
-            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).WIN}">Congratulations You WON! Restart server to play again ;-)</h3>
+            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).ONGOING}">[[${player}]] click on cell to play...</h3>
+            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).LOSE}">[[${player}]] LOST! Restart server to play again ;-)</h3>
+            	<h3 th:if="${status == T(de.bsi.minesweeper.model.GameStatus).WIN}">Congratulations [[${player}]] WON! Restart server to play again ;-)</h3>
 			</div>
 			<form th:action="@{/play}" method="post">
             	<div class="container" >
