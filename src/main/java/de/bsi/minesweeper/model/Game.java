@@ -25,15 +25,15 @@ public class Game {
 	}
 	
 	private void openCellAndCheckEndOfGame(Position position) {
-		if (field.openCell(position).isMine())
-			endGame(GameStatus.LOSE);
-		else if (field.isEveryFreeCellOpen())
-			endGame(GameStatus.WIN);	
-	}
-
-	private void endGame(GameStatus finalStatus) {
-		status = finalStatus;
-		field.openAllCells();
+		if (field.openCell(position).isMine()) {
+			status = GameStatus.LOSE;
+			field.openAllCells();	
+		} else if (field.isEveryFreeCellOpen()) {
+			status = GameStatus.WIN;
+			field.openAllCells();	
+		} else {
+			status = GameStatus.ONGOING;	
+		}
 	}
 
 }
