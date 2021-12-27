@@ -40,7 +40,9 @@ class MineFieldTest {
 	@Test
 	void openAllCellsInField() {
 		assertTrue(allCellsInField().allMatch(c -> !c.isOpen()));
-		field.openAllCells();
+		var game = new Game(3, 4);
+		game.field = this.field;
+		game.changeAllCellsToOpen(this.field, false);
 		assertTrue(allCellsInField().allMatch(c -> c.isOpen()));
 	}
 	
@@ -68,14 +70,14 @@ class MineFieldTest {
 	
 	@Test
 	void isEveryFreeCellOpenPositive() {
-		allCellsInField().forEach(Cell::open);
+		allCellsInField().forEach(cell -> cell.setOpen(true));
 		assertTrue(field.isEveryFreeCellOpen());
 	}
 	
 	@Test
 	void isEveryFreeCellOpenNegative() {
 		assertFalse(field.isEveryFreeCellOpen());
-		allCellsInField().limit(11).forEach(Cell::open);
+		allCellsInField().limit(11).forEach(cell -> cell.setOpen(true));
 		assertFalse(field.isEveryFreeCellOpen());
 	}
 	

@@ -1,5 +1,7 @@
 package de.bsi.minesweeper.model;
 
+import java.util.List;
+
 import lombok.Getter;
 
 public class Game {
@@ -27,13 +29,19 @@ public class Game {
 	private void openCellAndCheckEndOfGame(Position position) {
 		if (field.openCell(position).isMine()) {
 			status = GameStatus.LOSE;
-			field.openAllCells();	
+			changeAllCellsToOpen(field, true);	
 		} else if (field.isEveryFreeCellOpen()) {
 			status = GameStatus.WIN;
-			field.openAllCells();	
+			changeAllCellsToOpen(field, true);	
 		} else {
 			status = GameStatus.ONGOING;	
 		}
+	}
+	
+	void changeAllCellsToOpen(MineField field, boolean isOpen) {
+		var allRowsWithCells = field.getFieldRows();
+		var allCellsStream = allRowsWithCells.stream().flatMap(List<Cell>::stream); 
+		allCellsStream.forEach(cell -> cell.setOpen(isOpen));
 	}
 
 }

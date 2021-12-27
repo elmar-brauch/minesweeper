@@ -49,17 +49,13 @@ public class MineField {
 	
 	public Cell openCell(Position position) {
 		var cell = getCellAtPosition(position).orElseThrow(); 
-		cell.open();
+		cell.setOpen(true);
 		if (CellStatus.AWAY_OF_MINES.equals(cell.getStatus()))
 			getNeighbourCells(position).stream()
 					.filter(c -> !c.isOpen())
 					.map(Cell::getPosition)
 					.forEach(this::openCell);
 		return cell; 
-	}
-	
-	public void openAllCells() {
-		fieldRows.stream().flatMap(List<Cell>::stream).forEach(Cell::open);
 	}
 	
 	public boolean isEveryFreeCellOpen() {
@@ -74,26 +70,24 @@ public class MineField {
 	}
 	
 	List<Cell> getNeighbourCells(Position position) {
-		if (getCellAtPosition(position).isEmpty())
-			return List.of();
-		return positionsOfEightNeighbours(position.getRow(), position.getColumn())
-				.stream()
-				.map(this::getCellAtPosition)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-				.toList();
-	}
-	
-	private List<Position> positionsOfEightNeighbours(int row, int column) {
-		return List.of(
-				Position.of(row-1	, column-1	),
-				Position.of(row-1	, column	),
-				Position.of(row-1	, column+1	),
-				Position.of(row		, column-1	),
-				Position.of(row		, column+1	),
-				Position.of(row+1	, column-1	),
-				Position.of(row+1	, column	),
-				Position.of(row+1	, column+1	));
+		var neighbours = new ArrayList<Cell>();
+		int row = position.getRow();
+		int col = position.getColumn();
+		if (isInField(row, col)) {
+			boolean notFirstRow = row > 0;
+			boolean notLastRow = row + 1 < fieldRows.size();
+			boolean notFirstColumn = col > 0;
+			boolean notLastColumn = col+1 < fieldRows.get(row).size();
+			if (notFirstRow && notFirstColumn) neighbours.add(fieldRows.get(row-1).get(col-1));
+			if (notFirstRow) neighbours.add(fieldRows.get(row-1).get(col));
+			if (notFirstRow && notLastColumn) neighbours.add(fieldRows.get(row-1).get(col+1));
+			if (notFirstColumn) neighbours.add(fieldRows.get(row).get(col-1));
+			if (notLastColumn) neighbours.add(fieldRows.get(row).get(col+1));
+			if (notLastRow && notFirstColumn) neighbours.add(fieldRows.get(row+1).get(col-1));
+			if (notLastRow) neighbours.add(fieldRows.get(row+1).get(col));
+			if (notLastRow && notLastColumn) neighbours.add(fieldRows.get(row+1).get(col+1));
+		}
+		return neighbours;
 	}
 	
 	private boolean isInField(int row, int column) {

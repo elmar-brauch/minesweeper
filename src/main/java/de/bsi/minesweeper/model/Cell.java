@@ -1,8 +1,10 @@
 package de.bsi.minesweeper.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Cell {
 	
 	private final Position position;
@@ -35,10 +37,6 @@ public class Cell {
 		if (isMine())
 			return "X";
 		return "" + score;
-	}
-
-	public void open() {
-		this.open = true;
 	}
 	
 }
