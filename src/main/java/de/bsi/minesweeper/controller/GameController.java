@@ -38,6 +38,24 @@ public class GameController {
     	return getGameViewAndUpdateModel(model);
     }
     
+    /**
+     * Opens one cell in minefield at given position to play a round.
+     * If position is null, the Minesweeper game is restarted with a new minefield.
+     */
+    @PostMapping()
+    public String openCellOrRestartGame(Model model, 
+    		@RequestParam(required = false) String position) {
+    	if (position != null)
+    		game.playRound(Position.parse(position));
+    	else
+    		game = new Game(Level.EASY);		
+        return getGameViewAndUpdateModel(model);
+    }
+    
+    /**
+     * Opens one cell in minefield at given position to play a round.
+     * If position is null, the Minesweeper game is restarted with a new minefield.
+     */
     @PostMapping("play")
     public String openCellToPlayOneRound(Model model, @RequestParam String position) {
     	log.info("Button of cell {} pressed.", position);
