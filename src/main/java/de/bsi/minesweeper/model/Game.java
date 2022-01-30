@@ -12,6 +12,13 @@ public class Game {
 		this.field.placeMinesRandomly(level.getMines());
 	}
 	
+	// Constructor only for TDD exercise.
+	public Game(Level level, GameStatus fakeStatusForTesting) {
+		this(level.getRows(), level.getColumns());
+		this.field.placeMinesRandomly(level.getMines());
+		this.status = fakeStatusForTesting;
+	}
+	
 	public Game(int numberOfRows, int numberOfColumns) {
 		this.field = new MineField(numberOfRows, numberOfColumns);
 		this.status = GameStatus.ONGOING;		

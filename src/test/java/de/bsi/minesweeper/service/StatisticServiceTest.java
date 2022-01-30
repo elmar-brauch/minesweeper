@@ -3,6 +3,7 @@ package de.bsi.minesweeper.service;
 import org.junit.jupiter.api.Test;
 
 import de.bsi.minesweeper.model.Game;
+import de.bsi.minesweeper.model.GameStatus;
 import de.bsi.minesweeper.model.Level;
 
 class StatisticServiceTest {
@@ -12,26 +13,26 @@ class StatisticServiceTest {
 	
 	private StatisticService stats = new StatisticService();
 	
-	@Test
-	void startedGamesCount() {
-		startGamesFor(3, PLAYER_1);
-		startGamesFor(7, PLAYER_2);
-		// TODO Uncomment next line and start doing TDD.
-		// assertEquals(stats.startedGamesCount());
-	}
-	
 	// TODO Implement the following requirements in TDD style! 
-	// Move all finished games to playersCompletedGames map.
-	// Implement methods to answer following questions:
-	// * Which player has most wins
-	// * Which player has most loss
-	// * Which player has most ongoing games
+	// Implement tests & methods to answer following questions:
+	// * How many ongoing games exist?
+	// * Which player has most ongoing games?
+	// * Which player has most wins?
+	// * Which player has most loss?
 	// * Top 3 players with best wins/loss ratio
 	// * Top n players with best wins/loss ratio per level
 	
-	private void startGamesFor(int games, String player) {
+	@Test
+	void ongoingGamesCount() {
+		startGamesFor(3, PLAYER_1, GameStatus.ONGOING);
+		startGamesFor(7, PLAYER_2, GameStatus.ONGOING);
+		// TODO Uncomment next line and start doing TDD.
+		// assertEquals(10, stats.ongoingGamesCount());
+	}
+	
+	private void startGamesFor(int games, String player, GameStatus status) {
 		for (int i = 0; i < games; i++)
-			stats.addStartedGame(player, new Game(Level.EASY));
+			stats.addGame(player, new Game(Level.EASY, status));
 	}
 
 }

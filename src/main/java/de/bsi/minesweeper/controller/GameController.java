@@ -75,7 +75,7 @@ public class GameController {
     	game = new Game(level);
     	if (playerName == null)
     		playerName = "UNKNWON";
-    	stats.addStartedGame(playerName, game);
+    	stats.addGame(playerName, game);
     }
 
     private String getGameViewAndUpdateModel(Model model) {
