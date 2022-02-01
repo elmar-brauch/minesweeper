@@ -19,8 +19,7 @@ class StatisticServiceTest {
 	// * Which player has most ongoing games?
 	// * Which player has most wins?
 	// * Which player has most loss?
-	// * Top 3 players with best wins/loss ratio
-	// * Top n players with best wins/loss ratio per level
+	// * Top 3 players with best wins/games ratio
 	
 	@Test
 	void ongoingGamesCount() {
