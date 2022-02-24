@@ -11,9 +11,9 @@ import de.bsi.minesweeper.model.Position;
  * - Exceptions instead of Error codes
  * - Boilerplate code around checked Exceptions
  */
-public class ErrorHandling {
+public class ErrorCodesAndExceptions {
 	
-	private boolean clientMethod() {
+	boolean clientMethod() {
 		int result = storeFile(null);
 		if (result == 200)
 			return true;
@@ -29,26 +29,18 @@ public class ErrorHandling {
 	 * @param file
 	 * @return 200 in case of success; 400 in case of invalid file; 500 in case of full disc. 
 	 */
-	private int storeFile(Object file) {
+	int storeFile(Object file) {
 		// Storing file logic might:
 		// return 400;
 		// return 500;
 		return 200;
 	}
 	
-	private boolean anyError = true;
-	
-	private void storeFile2(Object file) {
-		// storing file logic...
-		if (anyError)
-			throw new RuntimeException("Disc was full");
-	}
 	
 	
 	
 	
-	
-	public void parseJson() {
+	void parseJson() {
 		var mapper = new ObjectMapper();
 		try {
 			mapper.readValue("wrong json", Position.class);
@@ -57,6 +49,14 @@ public class ErrorHandling {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private boolean anyError = true;
+	
+	void storeFile2(Object file) {
+		// storing file logic...
+		if (anyError)
+			throw new RuntimeException("Disc was full");
 	}
 	
 }
