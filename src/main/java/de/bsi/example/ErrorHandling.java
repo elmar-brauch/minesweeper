@@ -1,7 +1,5 @@
 package de.bsi.example;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,8 +10,6 @@ import de.bsi.minesweeper.model.Position;
  * Demo class to talk about:
  * - Exceptions instead of Error codes
  * - Boilerplate code around checked Exceptions
- * - Optional instead of returning null
- * 
  */
 public class ErrorHandling {
 	
@@ -63,25 +59,4 @@ public class ErrorHandling {
 		}
 	}
 	
-	
-	
-	
-	
-	private void printTextInUpperCase() {
-		String text = nullOrText().toUpperCase();
-		System.out.println(text);
-	}
-	
-	private String nullOrText() {
-		return null;
-	}
-	
-	private Optional<String> text() {
-		return Optional.ofNullable(nullOrText());
-	}
-	
-	private void printTextInLowerCase() {
-		Optional<String> optText = text();
-		optText.ifPresent(text -> System.out.println(text.toLowerCase()));
-	}
 }
