@@ -24,7 +24,7 @@ class MineFieldTest {
 	// * Any cell outside the field has 0 neighbour cells. It is specified like this.
 	@Test
 	void getNeighbourCells() {
-		var neighbours = field.getNeighbourCells(Position.of(1, 1));
+		var neighbours = field.getNeighbourCells(new Position(1, 1));
 		assertEquals(8, neighbours.size());
 	}
 	
@@ -32,7 +32,7 @@ class MineFieldTest {
 	@CsvSource({"true,0,0","true,2,3",
 		"false,-1,0", "false,3,3", "false,2,4", "false,10,20"})
 	void getCellAtPosition(boolean expectedPresent, int row, int column) {
-		var optCell = field.getCellAtPosition(Position.of(row, column));
+		var optCell = field.getCellAtPosition(new Position(row, column));
 		assertEquals(expectedPresent, optCell.isPresent());
 	}
 
