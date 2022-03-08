@@ -14,7 +14,7 @@ class PositionTest {
 	@ParameterizedTest
 	@CsvSource({"0,1,0:1","123456789,987654321,123456789:987654321"})
 	void parsePositive(int row, int column, String position) {
-		assertEquals(Position.of(row, column), Position.parse(position));
+		assertEquals(new Position(row, column), Position.parse(position));
 	}
 	
 	@ParameterizedTest
@@ -26,7 +26,7 @@ class PositionTest {
 	
 	@Test
 	void toStringTest() {
-		assertEquals("123:456", Position.of(123, 456).toString());
+		assertEquals("123:456", new Position(123, 456).toString());
 	}
 
 }

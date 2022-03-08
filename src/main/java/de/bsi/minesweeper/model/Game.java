@@ -1,11 +1,9 @@
 package de.bsi.minesweeper.model;
 
-import lombok.Getter;
-
 public class Game {
 	
-	@Getter MineField field;
-	@Getter private GameStatus status;
+	MineField field;
+	private GameStatus status;
 	
 	public Game(Level level) {
 		this(level.getRows(), level.getColumns());
@@ -43,4 +41,11 @@ public class Game {
 		field.openAllCells();
 	}
 
+	public MineField getField() {
+		return field;
+	}
+
+	public GameStatus getStatus() {
+		return status;
+	}
 }

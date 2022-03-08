@@ -13,13 +13,13 @@ import de.bsi.minesweeper.model.Game;
 import de.bsi.minesweeper.model.Level;
 import de.bsi.minesweeper.model.Position;
 import de.bsi.minesweeper.service.StatisticService;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @SessionScope
 @RequestMapping("/")
-@Slf4j
 public class GameController {
+	
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GameController.class);
 	
 	private static final String VIEW_MINESWEEPER = "minesweeper";
 	private static final String VIEW_LOGIN = "login";
@@ -66,7 +66,7 @@ public class GameController {
 	@GetMapping("mine")
 	public String placeMineAt(Model model, @RequestParam int row, @RequestParam int column) {
 		log.info("Place mine at position {}:{}", row, column);
-		var minePosition = Position.of(row, column);
+		var minePosition = new Position(row, column);
 		game.getField().placeOneMineAndUpdateScoreOfNeighbours(minePosition);
 		return getGameViewAndUpdateModel(model);
 	}
