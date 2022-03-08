@@ -1,8 +1,5 @@
 package de.bsi.minesweeper.model;
 
-import lombok.Getter;
-
-@Getter
 public class Cell {
 	
 	private final Position position;
@@ -39,6 +36,22 @@ public class Cell {
 
 	public void open() {
 		this.open = true;
+	}
+	
+	public Position getPosition() {
+		return position;
+	}
+
+	public long getScore() {
+		return score;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public CellStatus getStatus() {
+		return status;
 	}
 	
 }

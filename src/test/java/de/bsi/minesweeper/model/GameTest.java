@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class GameTest {
 	
-	private static final Position MINE_POSITION = Position.of(1, 1);
+	private static final Position MINE_POSITION = new Position(1, 1);
 
 	private Game game;
 	
@@ -29,16 +29,16 @@ class GameTest {
 	
 	@Test
 	void playTwoRounds() {
-		assertEquals(GameStatus.ONGOING, game.playRound(Position.of(1, 0)));
-		assertEquals(GameStatus.ONGOING, game.playRound(Position.of(0, 1)));
+		assertEquals(GameStatus.ONGOING, game.playRound(new Position(1, 0)));
+		assertEquals(GameStatus.ONGOING, game.playRound(new Position(0, 1)));
 	}
 	
 	@Test
 	void playThreeRoundsAndWin() {
-		game.playRound(Position.of(1, 0));
-		game.playRound(Position.of(0, 0));
+		game.playRound(new Position(1, 0));
+		game.playRound(new Position(0, 0));
 		
-		var status = game.playRound(Position.of(0, 1));
+		var status = game.playRound(new Position(0, 1));
 		assertEquals(GameStatus.WIN, status);
 		verifyAllCellsOpen();
 	}

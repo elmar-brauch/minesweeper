@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class CellTest {
 	
-	private Cell testCell = new Cell(Position.of(1, 2));
+	private Cell testCell = new Cell(new Position(1, 2));
 
 	@Test
 	void placeMine() {

@@ -25,7 +25,7 @@ class MineFieldTest {
 		"5,1,0","5,2,1","5,2,2","5,1,3","5,0,2","5,0,1",
 		"8,1,1","8,1,2"})
 	void getNeighbourCells(int expectedNumberOfNeighbours, int row, int column) {
-		var neighbours = field.getNeighbourCells(Position.of(row, column));
+		var neighbours = field.getNeighbourCells(new Position(row, column));
 		assertEquals(expectedNumberOfNeighbours, neighbours.size());
 	}
 	
@@ -33,7 +33,7 @@ class MineFieldTest {
 	@CsvSource({"true,0,0","true,2,3",
 		"false,-1,0", "false,3,3", "false,2,4", "false,10,20"})
 	void getCellAtPosition(boolean expectedPresent, int row, int column) {
-		var optCell = field.getCellAtPosition(Position.of(row, column));
+		var optCell = field.getCellAtPosition(new Position(row, column));
 		assertEquals(expectedPresent, optCell.isPresent());
 	}
 	
@@ -46,7 +46,7 @@ class MineFieldTest {
 	
 	@Test
 	void openSingleCellWithoutMines() {
-		var testPosition = Position.of(1, 1);
+		var testPosition = new Position(1, 1);
 		assertFalse(field.getCellAtPosition(testPosition).orElseThrow().isOpen());
 		assertTrue(field.openCell(testPosition).isOpen());
 		assertTrue(field.isEveryFreeCellOpen());
@@ -54,15 +54,15 @@ class MineFieldTest {
 	
 	@Test
 	void openSingleCellNextToMine() {
-		field.placeOneMineAndUpdateScoreOfNeighbours(Position.of(0, 1));
-		assertTrue(field.openCell(Position.of(1, 1)).isOpen());
+		field.placeOneMineAndUpdateScoreOfNeighbours(new Position(0, 1));
+		assertTrue(field.openCell(new Position(1, 1)).isOpen());
 		assertEquals(11, allCellsInField().filter(cell -> !cell.isOpen()).count());
 	}
 	
 	@Test
 	void openSingleCellAwayOfMine() {
-		field.placeOneMineAndUpdateScoreOfNeighbours(Position.of(0, 1));
-		assertTrue(field.openCell(Position.of(2, 3)).isOpen());
+		field.placeOneMineAndUpdateScoreOfNeighbours(new Position(0, 1));
+		assertTrue(field.openCell(new Position(2, 3)).isOpen());
 		assertEquals(2, allCellsInField().filter(cell -> !cell.isOpen()).count());
 	}
 	
