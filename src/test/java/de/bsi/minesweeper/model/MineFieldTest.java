@@ -33,7 +33,7 @@ class MineFieldTest {
 		"8,1,1","8,1,2",
 		"0,-1,2","0,3,0","0,2,-12345","0,0,4"})
 	void getNeighbourCells(int expectedNumberOfNeighbours, int row, int column) {
-		var neighbours = field.getNeighbourCells(Position.of(row, column));
+		var neighbours = field.getNeighbourCells(new Position(row, column));
 		assertEquals(expectedNumberOfNeighbours, neighbours.size());
 	}
 	
@@ -41,7 +41,7 @@ class MineFieldTest {
 	@CsvSource({"true,0,0","true,2,3",
 		"false,-1,0", "false,3,3", "false,2,4", "false,10,20"})
 	void getCellAtPosition(boolean expectedPresent, int row, int column) {
-		var optCell = field.getCellAtPosition(Position.of(row, column));
+		var optCell = field.getCellAtPosition(new Position(row, column));
 		assertEquals(expectedPresent, optCell.isPresent());
 	}
 
