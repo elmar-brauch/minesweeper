@@ -30,10 +30,17 @@ public class MineField {
 	}
 	
 	List<Cell> getNeighbourCells(Position position) {
-		// TODO Implement this method. 
+		// TODO Implement this method and replace demo code with clean code. 
 		// Feel free to create helping methods.
 		// Use MineFieldTest to test it!
-		return List.of();
+		
+		// Example how to get cell at specific position of your choice.
+		Optional<Cell> cellInUpperLeftCorner = getCellAtPosition(new Position(0, 0));
+		// Example how to deal with Optional: 1. Check if it contains contains an element (isPresent)
+		if (cellInUpperLeftCorner.isPresent())
+			// 2. Get the element inside the Optional.
+			return List.of(cellInUpperLeftCorner.get());
+		return null;
 	}
 
 }
