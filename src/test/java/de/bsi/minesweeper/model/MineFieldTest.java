@@ -42,7 +42,7 @@ class MineFieldTest {
 		assertTrue(allCellsInField().allMatch(c -> !c.isOpen()));
 		var game = new Game(3, 4);
 		game.field = this.field;
-		game.changeAllCellsToOpen(this.field, false);
+		game.changeAllCellsToOpen(this.field, true);
 		assertTrue(allCellsInField().allMatch(c -> c.isOpen()));
 	}
 	
