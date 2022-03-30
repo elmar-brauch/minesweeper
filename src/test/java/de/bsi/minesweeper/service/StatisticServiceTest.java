@@ -23,10 +23,10 @@ class StatisticServiceTest {
 	
 	@Test
 	void ongoingGamesCount() {
-		startGamesFor(3, PLAYER_1, GameStatus.ONGOING);
+		startGamesFor(3, PLAYER_1, GameStatus.LOSE);
 		startGamesFor(7, PLAYER_2, GameStatus.ONGOING);
 		// TODO Uncomment next line and start doing TDD.
-		// assertEquals(10, stats.ongoingGamesCount());
+		// assertEquals(7, stats.ongoingGamesCount());
 	}
 	
 	private void startGamesFor(int games, String player, GameStatus status) {
